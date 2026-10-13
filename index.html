@@ -132,9 +132,30 @@
     will-change: transform;
     transform: translate3d(0,0,0) scale(1.12);
   }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 46%;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(250,246,240,0) 0%,
+      rgba(250,246,240,0.28) 36%,
+      var(--bg) 82%,
+      var(--bg) 100%
+    );
+  }
   .hero-veil {
     position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(to bottom, transparent 55%, rgba(250,246,240,0));
+    background: linear-gradient(
+      to bottom,
+      rgba(250,246,240,0) 0%,
+      rgba(250,246,240,0) 38%,
+      rgba(250,246,240,0.55) 72%,
+      var(--bg) 100%
+    );
     pointer-events: none;
     opacity: 0;
     will-change: opacity;
@@ -146,12 +167,18 @@
     max-width: 980px;
     will-change: transform, opacity;
   }
+  @keyframes heroIn {
+    from { opacity: 0; transform: translate3d(0, 28px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
   .hero h1 {
     font-size: clamp(44px, 9vw, 115px);
     font-weight: 600;
     letter-spacing: -0.045em;
     line-height: 0.92;
     margin-bottom: 28px;
+    opacity: 0;
+    animation: heroIn 1.1s cubic-bezier(0.16,1,0.3,1) 0.12s forwards;
   }
   .hero h1 span { display: block; }
   .hero-sub {
@@ -159,15 +186,22 @@
     margin: 0 auto 36px;
     font-size: 15px;
     line-height: 1.55;
-    opacity: 0.92;
+    opacity: 0;
+    animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.32s forwards;
+  }
+  .hero-content .arrow-btn {
+    opacity: 0;
+    animation: heroIn 0.95s cubic-bezier(0.16,1,0.3,1) 0.48s forwards;
   }
   .hero-meta {
     position: absolute; z-index: 2;
     left: 0; right: 0; bottom: 0;
     display: flex; justify-content: space-between; align-items: flex-end;
     padding: 0 32px 32px;
-    font-size: 13px; opacity: 0.9;
+    font-size: 13px;
     will-change: transform, opacity;
+    opacity: 0;
+    animation: heroIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.6s forwards;
   }
   .hero-social { display: flex; gap: 10px; align-items: center; }
   .hero-social a:hover { opacity: 0.7; }
@@ -210,85 +244,120 @@
   .about-photos .ph-a { height: 340px; }
   .about-photos .ph-b { height: 460px; margin-top: 48px; }
 
-  /* PROJECTS */
-  .projects { padding: 40px 0 80px; background: var(--bg); }
+  /* PROJECTS — editorial masonry */
+  .projects { padding: 72px 0 96px; background: var(--bg); }
   .projects-head {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 40px; margin-bottom: 64px; align-items: end;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 48px;
   }
-  .projects .label { margin-bottom: 18px; }
   .projects h2 {
-    font-size: clamp(40px, 6vw, 72px);
+    font-size: clamp(42px, 5.4vw, 68px);
     font-weight: 600; letter-spacing: -0.045em; line-height: 0.95;
   }
   .projects-desc {
-    font-size: 15px; color: var(--muted); max-width: 320px;
-    justify-self: end; padding-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 220px;
+    text-align: right;
+    padding-top: 8px;
   }
   .project-grid {
-    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 28px 32px;
+    display: grid;
+    grid-template-columns: 0.82fr 1.18fr;
+    column-gap: 28px;
+    align-items: start;
   }
   .project-card {
     display: block;
-    opacity: 0;
-    transform: translateY(64px) scale(0.92);
-    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
-  }
-  .project-card.in-view {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    min-width: 0;
   }
   .project-card .thumb {
     position: relative;
     overflow: hidden;
     background: var(--soft);
-    margin-bottom: 14px;
   }
   .project-card .thumb img {
     width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    transition: transform 1.1s cubic-bezier(0.22,1,0.36,1);
   }
-  .project-card .hover-info {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 22px;
-    color: #fff;
-    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.15) 55%, transparent 100%);
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1);
-  }
-  .project-card .hover-info strong {
-    font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px;
-  }
-  .project-card .hover-info p {
-    font-size: 13px; line-height: 1.5; opacity: 0.9; max-width: 280px;
-  }
-  .project-card:hover .thumb img { transform: scale(1.08); }
-  .project-card:hover .hover-info {
-    opacity: 1; transform: translateY(0);
-  }
+  .project-card:hover .thumb img { transform: scale(1.045); }
   .project-card .meta {
-    display: flex; justify-content: space-between; gap: 16px; font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    margin-top: 12px;
+    font-size: 13.5px;
+    letter-spacing: -0.01em;
   }
-  .project-card .meta span:last-child { color: var(--muted); }
-  .p1 .thumb { height: 380px; }
-  .p2 { margin-top: 90px; transition-delay: 0.08s; }
-  .p2 .thumb { height: 420px; }
-  .p3 { margin-top: -40px; transition-delay: 0.12s; }
-  .p3 .thumb { height: 300px; }
-  .p4 { margin-top: 50px; transition-delay: 0.16s; }
-  .p4 .thumb { height: 360px; }
-  .p5 {
-    grid-column: 1 / -1; width: min(720px, 100%);
-    margin: 20px auto 0; transition-delay: 0.2s;
+  .project-card .meta span:last-child { color: var(--muted); font-size: 13px; }
+  .p1 { grid-column: 1; grid-row: 1; }
+  .p1 .thumb { aspect-ratio: 4 / 5; }
+  .p2 { grid-column: 2; grid-row: 1; transition-delay: 0.08s; }
+  .p2 .thumb { aspect-ratio: 16 / 10; }
+  .p3 {
+    grid-column: 1 / -1;
+    width: min(760px, 64%);
+    margin: 88px auto 0;
+    transition-delay: 0.1s;
   }
-  .p5 .thumb { height: 420px; }
+  .p3 .thumb { aspect-ratio: 16 / 9; }
+  .p4 { grid-column: 1; margin-top: 88px; transition-delay: 0.12s; }
+  .p4 .thumb { aspect-ratio: 16 / 10; }
+  .p5 { grid-column: 2; margin-top: 88px; transition-delay: 0.16s; }
+  .p5 .thumb { aspect-ratio: 5 / 4; }
 
-  /* SERVICES — smoke + image hover */
-  .services { padding: 100px 0 40px; background: var(--bg); }
-  .services .label { margin-bottom: 36px; }
-  .service-list { border-top: 1px solid var(--line); }
+  /* SERVICES — sticky stack under the feature image, soft edge fade */
+  .services {
+    --mix: 0;
+    --svc-bg: color-mix(in srgb, #0c0c0c calc(var(--mix) * 100%), var(--bg));
+    --svc-ink: color-mix(in srgb, #f4f1ea calc(var(--mix) * 100%), var(--ink));
+    --svc-muted: color-mix(in srgb, rgba(244,241,234,0.62) calc(var(--mix) * 100%), var(--muted));
+    --svc-line: color-mix(in srgb, rgba(255,255,255,0.16) calc(var(--mix) * 100%), var(--line));
+    --svc-pin: 0px;
+    position: sticky;
+    top: var(--svc-pin);
+    z-index: 1;
+    isolation: isolate;
+    padding: 120px 0 100px;
+    background: var(--svc-bg);
+    color: var(--svc-ink);
+  }
+  .services::before,
+  .services::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    height: 140px;
+    z-index: 6;
+    pointer-events: none;
+    opacity: calc(0.35 + var(--mix) * 0.65);
+  }
+  .services::before {
+    top: 0;
+    background: linear-gradient(
+      to bottom,
+      var(--bg) 0%,
+      color-mix(in srgb, var(--svc-bg) 70%, transparent) 42%,
+      transparent 100%
+    );
+  }
+  .services::after {
+    bottom: 0;
+    background: linear-gradient(
+      to top,
+      var(--bg) 0%,
+      color-mix(in srgb, var(--svc-bg) 70%, transparent) 42%,
+      transparent 100%
+    );
+  }
+  .services .wrap { position: relative; z-index: 2; }
+  .services .label { margin-bottom: 36px; color: var(--svc-muted); }
+  .service-list { border-top: 1px solid var(--svc-line); }
   .service-item {
     position: relative;
     display: grid;
@@ -296,9 +365,9 @@
     align-items: center;
     gap: 24px;
     padding: 32px 16px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--svc-line);
     overflow: hidden;
-    color: var(--ink);
+    color: var(--svc-ink);
     isolation: isolate;
   }
   .service-item .svc-bg,
@@ -341,11 +410,12 @@
     position: relative; z-index: 2;
     transition: color 0.35s ease;
   }
-  .service-item .num { font-size: 15px; color: var(--muted); }
+  .service-item .num { font-size: 15px; color: var(--svc-muted); }
   .service-item .title {
     font-size: clamp(28px, 4.2vw, 52px);
     font-weight: 600; letter-spacing: -0.035em; line-height: 1.05;
     text-align: right;
+    color: var(--svc-ink);
   }
   .service-item .svc-preview {
     width: 0; height: 72px; overflow: hidden;
@@ -365,17 +435,34 @@
     width: 110px; opacity: 1; transform: translateX(0) scale(1);
   }
 
-  /* FEATURE IMAGE */
-  .feature-image { padding: 80px 0; background: var(--bg); }
+  /* FEATURE IMAGE — full-bleed cover over services */
+  .stack-scene {
+    position: relative;
+    isolation: isolate;
+  }
+  .feature-image {
+    position: relative;
+    z-index: 3;
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+  }
   .feature-image .frame {
-    width: min(1180px, calc(100% - 64px));
-    margin: 0 auto; overflow: hidden; background: var(--soft);
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    overflow: hidden;
+    background: #111;
   }
   .feature-image img {
-    width: 100%; height: min(620px, 70vh); object-fit: cover;
-    transition: transform 1s ease;
+    width: 100%;
+    height: 118%;
+    object-fit: cover;
+    object-position: center center;
+    will-change: transform;
+    display: block;
   }
-  .feature-image:hover img { transform: scale(1.03); }
 
   /* GUIDED APPROACH — sketch journey */
   .process {
@@ -456,13 +543,18 @@
     min-height: 220px;
     padding: 36px 0 48px 8px;
     border-top: 1px solid var(--line);
-    opacity: 0.35;
-    transform: translateX(24px);
-    transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.22,1,0.36,1);
+    opacity: 0.28;
+    transform: translateX(36px) translateY(18px);
+    filter: blur(2px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16,1,0.3,1),
+      transform 0.8s cubic-bezier(0.16,1,0.3,1),
+      filter 0.55s ease;
   }
   .journey-step.active {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) translateY(0);
+    filter: blur(0);
   }
   .journey-step .num {
     font-size: 13px; color: var(--muted); margin-bottom: 12px;
@@ -677,8 +769,11 @@
     align-items: start;
   }
   .blog-card {
+    --py: 0px;
     will-change: transform;
-    transition: transform 0.1s linear;
+  }
+  .blog-card.reveal.is-in {
+    transform: translate3d(0, var(--py), 0) scale(1);
   }
   .blog-card .thumb {
     overflow: hidden; background: var(--soft); margin-bottom: 16px; height: 280px;
@@ -745,10 +840,12 @@
     .about-photos { padding-top: 0; }
     .about-photos .ph-a { height: 260px; }
     .about-photos .ph-b { height: 300px; margin-top: 0; }
-    .projects-desc, .process-side, .testimonials-head p { justify-self: start; max-width: none; }
-    .project-grid { grid-template-columns: 1fr; }
-    .p2, .p3, .p4 { margin-top: 0; }
-    .p1 .thumb, .p2 .thumb, .p3 .thumb, .p4 .thumb, .p5 .thumb { height: 260px; }
+    .projects-head { flex-direction: column; gap: 16px; }
+    .projects-desc, .process-side, .testimonials-head p { justify-self: start; max-width: none; text-align: left; }
+    .project-grid { grid-template-columns: 1fr; row-gap: 36px; }
+    .p1, .p2, .p3, .p4, .p5 { grid-column: auto; grid-row: auto; width: 100%; margin: 0; }
+    .p1 .thumb, .p4 .thumb { aspect-ratio: 16 / 11; }
+    .p2 .thumb, .p3 .thumb, .p5 .thumb { aspect-ratio: 16 / 10; }
     .blog-grid { grid-template-columns: 1fr; }
     .blog-card .thumb, .blog-card:first-child .thumb { height: 240px; }
     .service-item { grid-template-columns: 56px 1fr; }
@@ -756,14 +853,87 @@
     .service-item .svc-preview { display: none; }
     .hero-meta { padding: 0 20px 24px; }
     .hero h1 { font-size: clamp(40px, 12vw, 64px); }
+    .services { padding: 88px 0 72px; }
+    .services::before,
+    .services::after { height: 96px; }
+    .feature-image .frame { height: 100vh; height: 100dvh; }
   }
   @media (max-width: 560px) {
     .stats { grid-template-columns: 1fr; gap: 20px; }
     .about-photos { grid-template-columns: 1fr; }
     .footer-bottom { flex-direction: column; align-items: flex-start; }
   }
+  /* SCROLL REVEALS */
+  .reveal {
+    --reveal-y: 48px;
+    --reveal-x: 0px;
+    --reveal-scale: 1;
+    --reveal-rotate: 0deg;
+    opacity: 0;
+    transform:
+      translate3d(var(--reveal-x), var(--reveal-y), 0)
+      scale(var(--reveal-scale))
+      rotate(var(--reveal-rotate));
+    filter: blur(8px);
+    transition:
+      opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.9s ease;
+    transition-delay: var(--d, 0ms);
+    will-change: opacity, transform, filter;
+  }
+  .reveal.is-in {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+  .reveal-up { --reveal-y: 56px; --reveal-x: 0px; --reveal-scale: 0.985; }
+  .reveal-left { --reveal-y: 28px; --reveal-x: -42px; }
+  .reveal-right { --reveal-y: 28px; --reveal-x: 42px; }
+  .reveal-scale { --reveal-y: 28px; --reveal-scale: 0.92; }
+  .reveal-soft { --reveal-y: 24px; filter: blur(4px); }
+  .reveal-clip {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    clip-path: inset(12% 12% 12% 12% round 0);
+    transition:
+      clip-path 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.8s ease;
+    transition-delay: var(--d, 0ms);
+  }
+  .reveal-clip.is-in { clip-path: inset(0 0 0 0); }
+  .reveal-clip img {
+    transform: scale(1.12);
+    transition: transform 1.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--d, 0ms);
+  }
+  .reveal-clip.is-in img { transform: scale(1); }
+  .about-photos .ph.reveal-clip.is-in:hover img,
+  .project-card .thumb.reveal-clip.is-in:hover img { transform: scale(1.045); }
+  .project-card.reveal { --reveal-y: 64px; --reveal-scale: 0.96; }
+  .project-card .thumb.reveal-clip { margin: 0; }
+  .service-item.reveal { --reveal-y: 36px; --reveal-x: 28px; }
+  .stat.reveal strong {
+    display: inline-block;
+    transform: translateY(18px);
+    opacity: 0;
+    transition: transform 0.85s cubic-bezier(0.16,1,0.3,1), opacity 0.7s ease;
+    transition-delay: calc(var(--d, 0ms) + 120ms);
+  }
+  .stat.reveal.is-in strong { transform: translateY(0); opacity: 1; }
+
   @media (prefers-reduced-motion: reduce) {
-    .project-card, .journey-step, .faq-a, .blog-card, .hero-bg, .hero-content { transition: none !important; }
+    .project-card, .journey-step, .faq-a, .blog-card, .hero-bg, .hero-content, .hero-meta, .feature-image img,
+    .reveal, .reveal-clip, .reveal-clip img, .stat.reveal strong { transition: none !important; filter: none !important; animation: none !important; }
+    .hero h1, .hero-sub, .hero-content .arrow-btn, .hero-meta { opacity: 1 !important; transform: none !important; animation: none !important; }
+    .reveal, .reveal-clip {
+      opacity: 1 !important;
+      transform: none !important;
+      clip-path: none !important;
+      filter: none !important;
+    }
+    .reveal-clip img { transform: none !important; }
   }
 </style>
 </head>
@@ -834,15 +1004,15 @@
   <div class="wrap">
     <div class="about-grid">
       <div>
-        <p class="label">[ 01 About ]</p>
-        <h2>We are HousePlanFiles. India’s premium platform where home design &amp; construction meet — not just plans, but the professionals who build them.</h2>
+        <p class="label reveal reveal-up" style="--d:0ms">[ 01 About ]</p>
+        <h2 class="reveal reveal-up" style="--d:80ms">We are HousePlanFiles. India’s premium platform where home design &amp; construction meet — not just plans, but the professionals who build them.</h2>
         <div class="stats">
-          <div class="stat"><strong>15+</strong><span>Years of Experience</span></div>
-          <div class="stat"><strong>10K+</strong><span>House plans</span></div>
-          <div class="stat"><strong>50+</strong><span>Cities active</span></div>
+          <div class="stat reveal reveal-up" style="--d:160ms"><strong>15+</strong><span>Years of Experience</span></div>
+          <div class="stat reveal reveal-up" style="--d:240ms"><strong>10K+</strong><span>House plans</span></div>
+          <div class="stat reveal reveal-up" style="--d:320ms"><strong>50+</strong><span>Cities active</span></div>
         </div>
-        <p class="about-copy">Creating exceptional architectural designs for over 15 years. Your dream project starts with the perfect plan and the right professionals — architects, contractors, and materials on one platform.</p>
-        <a class="arrow-btn dark" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+        <p class="about-copy reveal reveal-up" style="--d:280ms">Creating exceptional architectural designs for over 15 years. Your dream project starts with the perfect plan and the right professionals — architects, contractors, and materials on one platform.</p>
+        <a class="arrow-btn dark reveal reveal-up" style="--d:360ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
           <span class="txt">Learn More</span>
           <span class="ico" aria-hidden="true">
             <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5"/></svg>
@@ -850,11 +1020,11 @@
         </a>
       </div>
       <div class="about-photos">
-        <div class="ph ph-a">
-          <img src="https://www.houseplanfiles.com/architect_hero.webp" alt="Architects &amp; Engineers on HousePlanFiles" loading="lazy" />
+        <div class="ph ph-a reveal reveal-clip" style="--d:120ms">
+          <img src="https://www.houseplanfiles.com/b12.webp" alt="Interior living space designed through HousePlanFiles" loading="lazy" />
         </div>
-        <div class="ph ph-b">
-          <img src="https://www.houseplanfiles.com/marketplace.webp" alt="Building material &amp; home decor marketplace" loading="lazy" />
+        <div class="ph ph-b reveal reveal-clip" style="--d:240ms">
+          <img src="https://www.houseplanfiles.com/b13.webp" alt="Modern residence interior" loading="lazy" />
         </div>
       </div>
     </div>
@@ -865,101 +1035,79 @@
 <section class="projects" id="work">
   <div class="wrap">
     <div class="projects-head">
-      <div>
-        <p class="label">[ Projects ]</p>
-        <h2>Selected Work</h2>
-      </div>
-      <p class="projects-desc">Aap kya dhoondh rahe hain? Categories that cover every plot size, budget, and city across India.</p>
+      <h2 class="reveal reveal-up" style="--d:0ms">Selected Work</h2>
+      <p class="projects-desc reveal reveal-up" style="--d:120ms">A collection of spaces defined by simplicity and intention.</p>
     </div>
     <div class="project-grid">
-      <a class="project-card p1" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
-        <div class="thumb">
+      <a class="project-card p1 reveal reveal-up" style="--d:40ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+        <div class="thumb reveal reveal-clip" style="--d:80ms">
           <img src="https://www.houseplanfiles.com/cat_home_designs.jpg" alt="Readymade Home Designs" loading="lazy" />
-          <div class="hover-info">
-            <strong>Readymade Home Designs</strong>
-            <p>Ready to use house plans for every plot size &amp; budget across India.</p>
-          </div>
         </div>
-        <div class="meta"><span>Readymade Home Designs</span><span>Pan India</span></div>
+        <div class="meta reveal reveal-soft" style="--d:180ms"><span>Readymade Home Designs</span><span>2025 – 2026</span></div>
       </a>
-      <a class="project-card p2" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
-        <div class="thumb">
-          <img src="https://www.houseplanfiles.com/architect_hero.webp" alt="Architects &amp; Engineers" loading="lazy" />
-          <div class="hover-info">
-            <strong>Architects &amp; Engineers</strong>
-            <p>Design, planning &amp; structural experts for your dream project.</p>
-          </div>
+      <a class="project-card p2 reveal reveal-up" style="--d:120ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+        <div class="thumb reveal reveal-clip" style="--d:160ms">
+          <img src="https://www.houseplanfiles.com/b14.webp" alt="Architects &amp; Engineers" loading="lazy" />
         </div>
-        <div class="meta"><span>Architects &amp; Engineers</span><span>Design Experts</span></div>
+        <div class="meta reveal reveal-soft" style="--d:260ms"><span>Architects &amp; Engineers</span><span>2026 – 2027</span></div>
       </a>
-      <a class="project-card p3" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
-        <div class="thumb">
+      <a class="project-card p3 reveal reveal-up" style="--d:80ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+        <div class="thumb reveal reveal-clip" style="--d:120ms">
           <img src="https://www.houseplanfiles.com/contractor2.webp" alt="Verified Contractors" loading="lazy" />
-          <div class="hover-info">
-            <strong>Verified Contractors</strong>
-            <p>Hire verified local contractors for construction and interiors.</p>
-          </div>
         </div>
-        <div class="meta"><span>Verified Contractors</span><span>Construction</span></div>
+        <div class="meta reveal reveal-soft" style="--d:220ms"><span>Verified Contractors</span><span>2025 – 2027</span></div>
       </a>
-      <a class="project-card p4" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
-        <div class="thumb">
-          <img src="https://www.houseplanfiles.com/b13.webp" alt="Modern Living Spaces" loading="lazy" />
-          <div class="hover-info">
-            <strong>Modern Living Spaces</strong>
-            <p>Har shehr ke apne professionals — local experts in your city.</p>
-          </div>
+      <a class="project-card p4 reveal reveal-up" style="--d:100ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+        <div class="thumb reveal reveal-clip" style="--d:140ms">
+          <img src="https://www.houseplanfiles.com/b11.webp" alt="Modern Living Spaces" loading="lazy" />
         </div>
-        <div class="meta"><span>Modern Living Spaces</span><span>Cities</span></div>
+        <div class="meta reveal reveal-soft" style="--d:240ms"><span>Modern Living Spaces</span><span>2025 – 2027</span></div>
       </a>
-      <a class="project-card p5" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
-        <div class="thumb">
-          <img src="https://www.houseplanfiles.com/b14.webp" alt="Luxury Villas &amp; Premium Residences" loading="lazy" />
-          <div class="hover-info">
-            <strong>Luxury Villas &amp; Residences</strong>
-            <p>Premium residences and luxury villas from verified professionals.</p>
-          </div>
+      <a class="project-card p5 reveal reveal-up" style="--d:160ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+        <div class="thumb reveal reveal-clip" style="--d:200ms">
+          <img src="https://www.houseplanfiles.com/b12.webp" alt="Luxury Villas &amp; Premium Residences" loading="lazy" />
         </div>
-        <div class="meta"><span>Luxury Villas &amp; Residences</span><span>Premium</span></div>
+        <div class="meta reveal reveal-soft" style="--d:300ms"><span>Luxury Villas &amp; Residences</span><span>2025 – 2026</span></div>
       </a>
     </div>
   </div>
 </section>
 
-<!-- SERVICES -->
+<!-- SERVICES + stacked feature image -->
+<div class="stack-scene">
 <section class="services" id="services">
   <div class="wrap">
-    <p class="label">[Services]</p>
+    <p class="label reveal reveal-up" style="--d:0ms">[Services]</p>
     <div class="service-list">
-      <a class="service-item" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+      <a class="service-item reveal" style="--d:40ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
         <span class="svc-bg" style="background-image:url('https://www.houseplanfiles.com/cat_home_designs.jpg')"></span>
         <span class="svc-smoke" aria-hidden="true"></span>
         <span class="num">/01</span>
         <span class="title">Readymade Home Designs</span>
         <span class="svc-preview"><img src="https://www.houseplanfiles.com/cat_home_designs.jpg" alt="" loading="lazy" /></span>
       </a>
-      <a class="service-item" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+      <a class="service-item reveal" style="--d:100ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
         <span class="svc-bg" style="background-image:url('https://www.houseplanfiles.com/architect_hero.webp')"></span>
         <span class="svc-smoke" aria-hidden="true"></span>
         <span class="num">/02</span>
         <span class="title">Architects &amp; Engineers</span>
         <span class="svc-preview"><img src="https://www.houseplanfiles.com/architect_hero.webp" alt="" loading="lazy" /></span>
       </a>
-      <a class="service-item" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+      <a class="service-item reveal" style="--d:160ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
         <span class="svc-bg" style="background-image:url('https://www.houseplanfiles.com/contractor2.webp')"></span>
         <span class="svc-smoke" aria-hidden="true"></span>
         <span class="num">/03</span>
         <span class="title">Verified Contractors</span>
         <span class="svc-preview"><img src="https://www.houseplanfiles.com/contractor2.webp" alt="" loading="lazy" /></span>
       </a>
-      <a class="service-item" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+      <a class="service-item reveal" style="--d:220ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
         <span class="svc-bg" style="background-image:url('https://www.houseplanfiles.com/marketplace.webp')"></span>
         <span class="svc-smoke" aria-hidden="true"></span>
         <span class="num">/04</span>
         <span class="title">Material Marketplace</span>
         <span class="svc-preview"><img src="https://www.houseplanfiles.com/marketplace.webp" alt="" loading="lazy" /></span>
       </a>
-      <a class="service-item" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+      <a class="service-item reveal" style="--d:280ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
         <span class="svc-bg" style="background-image:url('https://www.houseplanfiles.com/b11.jpg')"></span>
         <span class="svc-smoke" aria-hidden="true"></span>
         <span class="num">/05</span>
@@ -970,19 +1118,19 @@
   </div>
 </section>
 
-<!-- FEATURE IMAGE -->
-<section class="feature-image" aria-label="Showcase">
-  <div class="frame">
-    <img src="https://www.houseplanfiles.com/hero_slider_materials.jpg" alt="House Plan Files — materials, plans, and construction services" loading="lazy" />
+<section class="feature-image" id="featureImage" aria-label="Showcase">
+  <div class="frame reveal reveal-clip" style="--d:40ms">
+    <img id="featureImg" src="https://www.houseplanfiles.com/hero_slider_materials.jpg" alt="House Plan Files — materials, plans, and construction services" loading="lazy" />
   </div>
 </section>
+</div>
 
 <!-- GUIDED APPROACH — sketch journey -->
 <section class="process" id="process">
   <div class="wrap">
     <div class="process-head">
-      <h2>A Guided Approach</h2>
-      <div class="process-side">
+      <h2 class="reveal reveal-up" style="--d:0ms">A Guided Approach</h2>
+      <div class="process-side reveal reveal-up" style="--d:140ms">
         <p>Scroll the sketch journey — from enquiry to connection on India’s home design digital bazar.</p>
         <a class="arrow-btn dark" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
           <span class="txt">Learn More</span>
@@ -1098,10 +1246,10 @@
 <section class="testimonials" id="testimonials">
   <div class="wrap">
     <div class="testimonials-head">
-      <h2>Testimonial</h2>
-      <p>Trusted by thousands of satisfied customers worldwide who brought their dream homes to life with us.</p>
+      <h2 class="reveal reveal-up" style="--d:0ms">Testimonial</h2>
+      <p class="reveal reveal-up" style="--d:120ms">Trusted by thousands of satisfied customers worldwide who brought their dream homes to life with us.</p>
     </div>
-    <div class="t-slider">
+    <div class="t-slider reveal reveal-up" style="--d:180ms">
       <div class="t-track" id="tTrack">
         <div class="t-slide">
           <p class="t-quote">“Houseplanfiles helped us design our dream house perfectly. The team was professional and the process was seamless. Highly recommended!”</p>
@@ -1151,11 +1299,11 @@
   <div class="wrap">
     <div class="faq-grid">
       <div>
-        <p class="label">[ Faq ]</p>
-        <h2>Common questions, answered</h2>
+        <p class="label reveal reveal-up" style="--d:0ms">[ Faq ]</p>
+        <h2 class="reveal reveal-up" style="--d:80ms">Common questions, answered</h2>
       </div>
       <div class="faq-list">
-        <div class="faq-item open">
+        <div class="faq-item open reveal reveal-up" style="--d:60ms">
           <span class="faq-smoke" aria-hidden="true"></span>
           <button class="faq-q" type="button">What can I find on HousePlanFiles?<span class="plus" aria-hidden="true"></span></button>
           <div class="faq-a">
@@ -1165,7 +1313,7 @@
             </div>
           </div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item reveal reveal-up" style="--d:110ms">
           <span class="faq-smoke" aria-hidden="true"></span>
           <button class="faq-q" type="button">How does the Lead Board work?<span class="plus" aria-hidden="true"></span></button>
           <div class="faq-a">
@@ -1175,7 +1323,7 @@
             </div>
           </div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item reveal reveal-up" style="--d:160ms">
           <span class="faq-smoke" aria-hidden="true"></span>
           <button class="faq-q" type="button">Do you cover cities across India?<span class="plus" aria-hidden="true"></span></button>
           <div class="faq-a">
@@ -1185,7 +1333,7 @@
             </div>
           </div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item reveal reveal-up" style="--d:210ms">
           <span class="faq-smoke" aria-hidden="true"></span>
           <button class="faq-q" type="button">Are there ready-to-use house plans?<span class="plus" aria-hidden="true"></span></button>
           <div class="faq-a">
@@ -1195,7 +1343,7 @@
             </div>
           </div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item reveal reveal-up" style="--d:260ms">
           <span class="faq-smoke" aria-hidden="true"></span>
           <button class="faq-q" type="button">Can professionals join the network?<span class="plus" aria-hidden="true"></span></button>
           <div class="faq-a">
@@ -1205,7 +1353,7 @@
             </div>
           </div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item reveal reveal-up" style="--d:310ms">
           <span class="faq-smoke" aria-hidden="true"></span>
           <button class="faq-q" type="button">How do I contact HousePlanFiles?<span class="plus" aria-hidden="true"></span></button>
           <div class="faq-a">
@@ -1225,30 +1373,30 @@
   <div class="wrap">
     <div class="blog-head">
       <div>
-        <p class="label">[ Blog &amp; news ]</p>
-        <h2>Latest articles</h2>
+        <p class="label reveal reveal-up" style="--d:0ms">[ Blog &amp; news ]</p>
+        <h2 class="reveal reveal-up" style="--d:80ms">Latest articles</h2>
       </div>
-      <a class="blog-more" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">More blog →</a>
+      <a class="blog-more reveal reveal-up" style="--d:140ms" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">More blog →</a>
     </div>
     <div class="blog-grid" id="blogGrid">
-      <a class="blog-card" data-speed="0.18" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
-        <div class="thumb">
+      <a class="blog-card reveal reveal-up" style="--d:60ms" data-speed="0.18" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+        <div class="thumb reveal reveal-clip" style="--d:100ms">
           <img src="https://www.houseplanfiles.com/cat_home_designs.jpg" alt="Future-Ready Home Design" loading="lazy" />
         </div>
         <p class="tag">Design</p>
         <h3>Future-Ready Home Design: Innovative Solutions You Need</h3>
         <p class="read">Read article →</p>
       </a>
-      <a class="blog-card" data-speed="0.32" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
-        <div class="thumb">
+      <a class="blog-card reveal reveal-up" style="--d:140ms" data-speed="0.32" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+        <div class="thumb reveal reveal-clip" style="--d:180ms">
           <img src="https://www.houseplanfiles.com/b12.webp" alt="Local to Digital" loading="lazy" />
         </div>
         <p class="tag">Platform</p>
         <h3>Local to Digital → Digital to Global</h3>
         <p class="read">Read article →</p>
       </a>
-      <a class="blog-card" data-speed="0.46" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
-        <div class="thumb">
+      <a class="blog-card reveal reveal-up" style="--d:220ms" data-speed="0.46" href="https://www.houseplanfiles.com/" target="_blank" rel="noopener">
+        <div class="thumb reveal reveal-clip" style="--d:260ms">
           <img src="https://www.houseplanfiles.com/b11.webp" alt="Home Design &amp; Construction" loading="lazy" />
         </div>
         <p class="tag">Marketplace</p>
@@ -1322,6 +1470,10 @@
   var heroContent = document.getElementById("heroContent");
   var heroMeta = document.getElementById("heroMeta");
   var heroVeil = document.getElementById("heroVeil");
+  var services = document.getElementById("services");
+  var featureImage = document.getElementById("featureImage");
+  var featureImg = document.getElementById("featureImg");
+  var svcPin = 0;
   var journeyDraw = document.getElementById("journeyDraw");
   var journey = document.getElementById("journey");
   var journeySteps = document.querySelectorAll(".journey-step");
@@ -1330,8 +1482,52 @@
   var blogCards = document.querySelectorAll(".blog-card");
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var ticking = false;
+  var heroSmooth = 0;
+  var heroRunning = false;
 
   function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+  function smoothstep(t) {
+    t = clamp(t, 0, 1);
+    return t * t * (3 - 2 * t);
+  }
+
+  function applyHero(y) {
+    if (reduced || !heroBg) return;
+    var vh = window.innerHeight || 1;
+    var p = clamp(y / vh, 0, 1);
+    var fade = smoothstep(clamp((p - 0.12) / 0.88, 0, 1));
+    var veil = smoothstep(clamp((p - 0.22) / 0.78, 0, 1));
+    heroBg.style.transform = "translate3d(0," + (y * 0.22).toFixed(2) + "px,0) scale(" + (1.08 - p * 0.03).toFixed(4) + ")";
+    if (heroContent) {
+      heroContent.style.transform = "translate3d(0," + (y * 0.055).toFixed(2) + "px,0)";
+      heroContent.style.opacity = (1 - fade).toFixed(3);
+    }
+    if (heroMeta) {
+      var metaFade = smoothstep(clamp((p - 0.02) / 0.62, 0, 1));
+      heroMeta.style.transform = "translate3d(0," + (y * 0.03).toFixed(2) + "px,0)";
+      heroMeta.style.opacity = (1 - metaFade).toFixed(3);
+    }
+    if (heroVeil) heroVeil.style.opacity = veil.toFixed(3);
+  }
+
+  function tickHero() {
+    var target = window.scrollY || window.pageYOffset || 0;
+    heroSmooth += (target - heroSmooth) * 0.075;
+    if (Math.abs(target - heroSmooth) < 0.2) heroSmooth = target;
+    applyHero(heroSmooth);
+    var vh = window.innerHeight || 1;
+    if (Math.abs(target - heroSmooth) > 0.2 || target < vh * 1.35) {
+      requestAnimationFrame(tickHero);
+    } else {
+      heroRunning = false;
+    }
+  }
+
+  function startHero() {
+    if (reduced || heroRunning) return;
+    heroRunning = true;
+    requestAnimationFrame(tickHero);
+  }
 
   function updateScrollFX() {
     var y = window.scrollY || window.pageYOffset;
@@ -1340,19 +1536,39 @@
     if (y > 40) nav.classList.add("scrolled");
     else nav.classList.remove("scrolled");
 
-    /* Hero parallax */
-    if (!reduced && heroBg) {
-      var p = clamp(y / vh, 0, 1.2);
-      heroBg.style.transform = "translate3d(0," + (y * 0.45) + "px,0) scale(" + (1.12 - p * 0.06) + ")";
-      if (heroContent) {
-        heroContent.style.transform = "translate3d(0," + (y * 0.22) + "px,0) scale(" + (1 - p * 0.06) + ")";
-        heroContent.style.opacity = String(1 - p * 0.85);
+    /* Services darkens in place. Feature image stacks over it. */
+    if (services) {
+      var nextPin = Math.min(0, vh - services.offsetHeight);
+      if (nextPin !== svcPin) {
+        svcPin = nextPin;
+        services.style.setProperty("--svc-pin", svcPin + "px");
       }
-      if (heroMeta) {
-        heroMeta.style.transform = "translate3d(0," + (y * 0.12) + "px,0)";
-        heroMeta.style.opacity = String(1 - p * 1.1);
+      var sr = services.getBoundingClientRect();
+      var start = vh * 0.92;
+      var end = vh * 0.28;
+      var mix = clamp((start - sr.top) / (start - end), 0, 1);
+      services.style.setProperty("--mix", mix.toFixed(3));
+    }
+
+    if (featureImage && featureImg) {
+      var frame = featureImg.parentElement;
+      if (frame && services) {
+        var coverH = Math.max(vh, services.offsetHeight);
+        if (Math.abs((frame._coverH || 0) - coverH) > 1) {
+          frame._coverH = coverH;
+          frame.style.height = coverH + "px";
+        }
       }
-      if (heroVeil) heroVeil.style.opacity = String(clamp(p * 1.4, 0, 1));
+      if (!reduced) {
+        var fr = featureImage.getBoundingClientRect();
+        var frameH = frame ? frame.offsetHeight : fr.height;
+        var travel = Math.max(0, featureImg.offsetHeight - frameH);
+        var cover = clamp((vh * 0.95 - fr.top) / (vh * 0.65 + frameH * 0.85), 0, 1);
+        var ease = cover * cover * (3 - 2 * cover);
+        var revealed = !frame || frame.classList.contains("is-in");
+        var scale = revealed ? 1 : 1.08;
+        featureImg.style.transform = "translate3d(0," + (-travel * ease).toFixed(2) + "px,0) scale(" + scale + ")";
+      }
     }
 
     /* Sketch journey draw */
@@ -1378,16 +1594,17 @@
       });
     }
 
-    /* Blog parallax */
+    /* Blog parallax — only after reveal settles */
     if (!reduced && blogCards.length) {
       blogCards.forEach(function (card) {
+        if (!card.classList.contains("is-in")) return;
         var speed = parseFloat(card.getAttribute("data-speed") || "0.25");
         var r = card.getBoundingClientRect();
         var center = r.top + r.height / 2 - vh / 2;
         var shift = -center * speed * 0.35;
-        card.style.transform = "translate3d(0," + shift + "px,0)";
+        card.style.setProperty("--py", shift.toFixed(2) + "px");
         var img = card.querySelector("img");
-        if (img) img.style.transform = "translate3d(0," + (shift * -0.55) + "px,0)";
+        if (img) img.style.transform = "translate3d(0," + (shift * -0.55).toFixed(2) + "px,0) scale(1)";
       });
     }
 
@@ -1395,6 +1612,7 @@
   }
 
   function onScroll() {
+    startHero();
     if (!ticking) {
       ticking = true;
       requestAnimationFrame(updateScrollFX);
@@ -1403,21 +1621,24 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll, { passive: true });
   updateScrollFX();
+  startHero();
 
-  /* Project pop-up on scroll */
-  var projectCards = document.querySelectorAll(".project-card");
-  if ("IntersectionObserver" in window) {
-    var projObs = new IntersectionObserver(function (entries) {
+  /* Shared scroll-in reveals */
+  var revealEls = document.querySelectorAll(".reveal");
+  function markIn(el) { el.classList.add("is-in"); }
+  if (reduced) {
+    revealEls.forEach(markIn);
+  } else if ("IntersectionObserver" in window) {
+    var revealObs = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
-          projObs.unobserve(entry.target);
-        }
+        if (!entry.isIntersecting) return;
+        markIn(entry.target);
+        revealObs.unobserve(entry.target);
       });
-    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
-    projectCards.forEach(function (card) { projObs.observe(card); });
+    }, { threshold: 0.12, rootMargin: "0px 0px -10% 0px" });
+    revealEls.forEach(function (el) { revealObs.observe(el); });
   } else {
-    projectCards.forEach(function (card) { card.classList.add("in-view"); });
+    revealEls.forEach(markIn);
   }
 
   menuBtn.addEventListener("click", function () {
